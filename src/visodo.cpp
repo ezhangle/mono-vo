@@ -156,15 +156,14 @@ int main( int argc, char** argv )	{
     double real_x, real_y, real_z;
   	scale = getAbsoluteScale(numFrame, &real_x, &real_y, &real_z);
 
-    if ((scale>0.1)&&(t.at<double>(2) > t.at<double>(0)) && (t.at<double>(2) > t.at<double>(1))) {
-
+    if ((scale>0.1)&&(t.at<double>(2) > t.at<double>(0)) && (t.at<double>(2) > t.at<double>(1)))
+    {
       t_f = t_f + scale*(R_f*t);
       R_f = R*R_f;
 
     }
-  	
     else {
-     cout << "scale below 0.1, or incorrect translation" << endl;
+     // cout << "scale below 0.1, or incorrect translation" << endl;
     }
     
 
@@ -172,7 +171,6 @@ int main( int argc, char** argv )	{
  	  if (prevFeatures.size() < MIN_NUM_FEAT)	{
  		  featureDetection(prevImage, prevFeatures);
       featureTracking(prevImage,currImage,prevFeatures,currFeatures, status);
-
  	  }
 
     prevImage = currImage.clone();
@@ -190,6 +188,10 @@ int main( int argc, char** argv )	{
     sprintf(text, "Coordinates: x = %02fm y = %02fm z = %02fm", t_f.at<double>(0), t_f.at<double>(1), t_f.at<double>(2));
     putText(traj, text, textOrg, fontFace, fontScale, Scalar::all(255), thickness, 8);
 
+    for (int i = 0; i < currFeatures.size(); ++i)
+    {
+      cv::circle(currImage_c, currFeatures[i], 1, cv::Scalar(0, 255, 0), 2);
+    }
     imshow( "Road facing camera", currImage_c );
     imshow( "Trajectory", traj );
 
